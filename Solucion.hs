@@ -14,17 +14,22 @@ import Data.Char
 -- Integrantes que abandonaron la materia: {En caso que haya abandonado la materia algún
                         -- integrante, completar con los dni y apellidos, sino dejar vacío}
 
+    
+
+
+
 -- EJ 1
 esMinuscula :: Char -> Bool
-esMinuscula _ = True
-
+esMinuscula c
+    |ord c >= 97 && ord c <= 122 = True
+    |otherwise = False
 -- EJ 2
 letraANatural :: Char -> Int
-letraANatural _ = 1
+letraANatural c = ord c
 
 -- EJ 3
 desplazar :: Char -> Int -> Char
-desplazar _ _ = 'd'
+desplazar c n = chr(letraANatural c + n) 
 
 -- EJ 4
 cifrar :: String -> Int -> String
