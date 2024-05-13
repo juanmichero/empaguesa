@@ -3,7 +3,7 @@ Nombre de grupo: {Completar con el nombre del grupo}
 repositorio: {Completar con el link al repositorio}
 commit: {Completar con el commit a tener en cuenta (no se revisan cambios posteriores)}
 Integrante1: { 43876390,MicheroJuanPedro }
-Integrante2: { DNI2,apellidoYNombre2}
+Integrante2: { 96229011, Ontón Encalada Favio André}
 Integrante3: { 44935935, PirrelloAgustinNicolas}
 Integrante4: { 96055051,Aular Juan}
 Integrantes que abandonaron la materia: {En caso que haya abandonado la materia algún integrante, completar con los dni y apellidos, sino dejar vacío}
