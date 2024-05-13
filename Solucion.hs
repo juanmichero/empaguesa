@@ -16,15 +16,22 @@ import Data.Char
 
 -- EJ 1
 esMinuscula :: Char -> Bool
-esMinuscula _ = True
+esMinuscula 'a' = True
+esMinuscula letra 
+    |ord letra >= 97 && ord letra <= 122 = True
+    |otherwise = False
 
 -- EJ 2
 letraANatural :: Char -> Int
-letraANatural _ = 1
+letraANatural 'a' = 0
+letraANatural letra = ord letra - 97
 
 -- EJ 3
-desplazar :: Char -> Int -> Char
-desplazar _ _ = 'd'
+desplazar :: Char -> Int -> Char -- Falta el caso donde hace salto en el abecedario
+desplazar letra 0 = letra
+desplazar letra n
+    |esMinuscula letra && noHaySaltos = chr (ord letra + n)
+        where noHaySaltos = letraANatural letra + n <= 25 && letraANatural letra + n >= 1 
 
 -- EJ 4
 cifrar :: String -> Int -> String
