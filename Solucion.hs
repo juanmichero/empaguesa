@@ -30,7 +30,7 @@ cifrar (x:xs) n = desplazar x n : cifrar xs n
 --5
 descifrar :: String -> Int -> String
 descifrar [] _ = []
-descifrar (x:xs) n = desplazar x (-n) : descifrar xs (-n)
+descifrar (x:xs) n = desplazar x (-n) : descifrar xs n
 
 
 --------------------------------------------------
