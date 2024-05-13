@@ -18,7 +18,7 @@ letraANatural c = ord c
 desplazar :: Char -> Int -> Char
 desplazar c n 
     |ordc + n >= 97 && ordc + n <= 122 = chr (ordc + n)
-    |otherwise = chr (ordc-26 + n)
+    |otherwise = chr (ordc-26 + (mod n 25))
     where 
         ordc = letraANatural c 
         
