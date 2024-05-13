@@ -14,10 +14,6 @@ import Data.Char
 -- Integrantes que abandonaron la materia: {En caso que haya abandonado la materia algún
                         -- integrante, completar con los dni y apellidos, sino dejar vacío}
 
-    
-
-
-
 -- EJ 1
 esMinuscula :: Char -> Bool
 esMinuscula c
