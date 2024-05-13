@@ -4,36 +4,39 @@ import Data.Char
 -- Sólo está permitido usar estas funciones:
 -- https://campus.exactas.uba.ar/pluginfile.php/557895/mod_resource/content/1/validas_tp.pdf
 
-
--- Completar!
--- Nombre de grupo: {}
--- Integrante1: { DNI1,apellidoYNombre1}
--- Integrante2: { DNI2,apellidoYNombre2}
--- Integrante3: { DNI3,apellidoYNombre3}
--- Integrante4: { DNI4,apellidoYNombre4}
--- Integrantes que abandonaron la materia: {En caso que haya abandonado la materia algún
-                        -- integrante, completar con los dni y apellidos, sino dejar vacío}
-
--- EJ 1
+--1
 esMinuscula :: Char -> Bool
 esMinuscula c
     |ord c >= 97 && ord c <= 122 = True
     |otherwise = False
--- EJ 2
+    
+--2
 letraANatural :: Char -> Int
 letraANatural c = ord c
 
--- EJ 3
+--3
 desplazar :: Char -> Int -> Char
-desplazar c n = chr(letraANatural c + n) 
-
--- EJ 4
+desplazar c n 
+    |ordc + n >= 97 && ordc + n <= 122 = chr (ordc + n)
+    |otherwise = chr (ordc-26 + n)
+    where 
+        ordc = letraANatural c 
+        
+--4
 cifrar :: String -> Int -> String
-cifrar _ _ = "frpsxwdflrq"
+cifrar [] _ = []
+cifrar (x:xs) n = desplazar x n : cifrar xs n
 
--- EJ 5
+--5
 descifrar :: String -> Int -> String
-descifrar _ _ = "computacion"
+descifrar [] _ = []
+descifrar (x:xs) n = desplazar x (-n) : descifrar xs (-n)
+
+
+--------------------------------------------------
+
+
+
 
 -- EJ 6
 cifrarLista :: [String] -> [String]
