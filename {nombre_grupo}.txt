@@ -2,7 +2,7 @@
 Nombre de grupo: {Completar con el nombre del grupo}
 repositorio: {Completar con el link al repositorio}
 commit: {Completar con el commit a tener en cuenta (no se revisan cambios posteriores)}
-Integrante1: { DNI1,apellidoYNombre1}
+Integrante1: { 43876390,MicheroJuanPedro }
 Integrante2: { DNI2,apellidoYNombre2}
 Integrante3: { DNI3,apellidoYNombre3}
 Integrante4: { DNI4,apellidoYNombre4}
