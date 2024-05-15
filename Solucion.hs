@@ -11,8 +11,14 @@ letraANatural c = ord c - 97
 
 -- EJ 3
 desplazar :: Char -> Int -> Char
-desplazar c n | esMinuscula c = chr (ord c + n)
-              | otherwise = c
+desplazar c n | not (esMinuscula c) = c
+              | esMinuscula c && (ord c + n) < 123 = chr (ord c + n)
+              | esMinuscula c && (ord c + n) >= 123 = chr (ord c + n - 26)
+
+-- caso base rango 0-25
+
+-- cantidadPasadas :: Int -> Int
+-- cantidadPasadas n 
 
 -- EJ 4
 cifrar :: String -> Int -> String
