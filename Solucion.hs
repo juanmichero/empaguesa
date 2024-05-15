@@ -11,8 +11,6 @@ import Data.Char
 -- Integrante2: { DNI2,apellidoYNombre2}
 -- Integrante3: { DNI3,apellidoYNombre3}
 -- Integrante4: { DNI4,apellidoYNombre4}
--- Integrantes que abandonaron la materia: {En caso que haya abandonado la materia algún
-                        -- integrante, completar con los dni y apellidos, sino dejar vacío}
 
 -- EJ 1
 esMinuscula :: Char -> Bool
