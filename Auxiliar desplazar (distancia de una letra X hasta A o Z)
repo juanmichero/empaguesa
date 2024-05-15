@@ -1,0 +1,11 @@
+distanciaDeZ :: String -> Int
+distanciaDeZ xs
+    |xs == "z" = 0
+    |otherwise = 1 + distanciaDeZ [siguienteLetra]
+        where siguienteLetra = natAChar (charANat (head xs) + 1)
+
+distanciaDeA :: String -> Int
+distanciaDeA xs
+    |xs == "a" = 0
+    |otherwise = 1 + distanciaDeA [letraAnterior]
+        where letraAnterior = natAChar (charANat (head xs) - 1)
