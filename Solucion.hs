@@ -1,28 +1,18 @@
 module Solucion where
 import Data.Char
--- No se permite agrear nuevos imports
--- Sólo está permitido usar estas funciones:
--- https://campus.exactas.uba.ar/pluginfile.php/557895/mod_resource/content/1/validas_tp.pdf
-
-
--- Completar!
--- Nombre de grupo: {}
--- Integrante1: { DNI1,apellidoYNombre1}
--- Integrante2: { DNI2,apellidoYNombre2}
--- Integrante3: { DNI3,apellidoYNombre3}
--- Integrante4: { DNI4,apellidoYNombre4}
 
 -- EJ 1
 esMinuscula :: Char -> Bool
-esMinuscula _ = True
+esMinuscula c = ord c >= 97 && ord c <= 122
 
 -- EJ 2
 letraANatural :: Char -> Int
-letraANatural _ = 1
+letraANatural c = ord c - 97
 
 -- EJ 3
 desplazar :: Char -> Int -> Char
-desplazar _ _ = 'd'
+desplazar c n | esMinuscula c = chr (ord c + n)
+              | otherwise = c
 
 -- EJ 4
 cifrar :: String -> Int -> String
