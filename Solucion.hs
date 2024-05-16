@@ -11,26 +11,47 @@ letraANatural c = ord c - 97
 
 -- EJ 3
 desplazar :: Char -> Int -> Char
-desplazar c n | not (esMinuscula c) = c
-              | esMinuscula c && (ord c + n) < 123 = chr (ord c + n)
-              | esMinuscula c && (ord c + n) >= 123 = chr (ord c + n - 26)
+desplazar c n | esMinuscula c = desplazarAux c n
+              | otherwise = c
 
--- caso base rango 0-25
+desplazarAux :: Char -> Int -> Char
+-- desplazarAux c n = chr (97 + (mod ((mod (ord c - 97 + n) 26) + 26) 26))
+desplazarAux c n = chr (97 + modPos)
+  where
+    pos = ord c - 97
+    newPos = mod (pos + n) 26
+    modPos = rango newPos
 
--- cantidadPasadas :: Int -> Int
--- cantidadPasadas n 
+rango :: Int -> Int
+rango x = mod (x + 26) 26
 
 -- EJ 4
 cifrar :: String -> Int -> String
-cifrar _ _ = "frpsxwdflrq"
+cifrar [] n = []
+cifrar (x:xs) n = desplazar x n : cifrar xs n
 
 -- EJ 5
 descifrar :: String -> Int -> String
-descifrar _ _ = "computacion"
+descifrar s n = cifrar s (-n)
 
 -- EJ 6
 cifrarLista :: [String] -> [String]
-cifrarLista _ = ["compu", "mbcp", "kpvtq"]
+cifrarLista [] = []
+-- cifrarLista (x:y:xs) = cifrar x (indice x (x:y:xs)) : cifrarLista (y:xs)
+
+-- ["bbb","aaa"]
+
+-- indice :: Eq a => a -> [a] -> Int
+-- indice x xs = buscarIndice xs 0
+--   where
+--     buscarIndice [] _ = -1                     
+--     buscarIndice (y:ys) i
+--       | x == y    = i                          
+--       | otherwise = buscarIndice ys (i + 1)   
+
+-- longitud :: [t] -> Integer
+-- longitud [] = 0
+-- longitud (x:xs) = 1 + longitud xs  
 
 -- EJ 7
 frecuencia :: String -> [Float]
