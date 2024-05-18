@@ -30,21 +30,52 @@ letraANatural letra = ord letra - 97
 desplazar :: Char -> Int -> Char -- Falta el caso donde hace salto en el abecedario
 desplazar letra 0 = letra
 desplazar letra n
-    |esMinuscula letra && noHaySaltos = chr (ord letra + n)
-        where noHaySaltos = letraANatural letra + n <= 25 && letraANatural letra + n >= 1 
+    |esMinuscula letra && noHaySaltosHaciaA = chr (ord letra + n)
+    |esMinuscula letra && noHaySaltosHaciaZ = chr (ord letra + n)
+    |esMinuscula letra && haySaltoHaciaA = desplazar 'a' (n - 1 - distanciaDeZ letra)
+    |esMinuscula letra && haySaltoHaciaZ = desplazar 'z' (n + 1 + distanciaDeA letra)
+    |otherwise = letra
+        where noHaySaltosHaciaA = letraANatural letra + n <= 25 && letraANatural letra + n >= 0
+              noHaySaltosHaciaZ = letraANatural letra + n <= 25 && letraANatural letra + n >= 0
+              haySaltoHaciaA = distanciaDeZ letra < n  
+              haySaltoHaciaZ = distanciaDeA letra < -n
+
+distanciaDeZ :: Char -> Int
+distanciaDeZ 'z' = 0
+distanciaDeZ letra = ord 'z' - ord letra
+
+distanciaDeA :: Char -> Int
+distanciaDeA 'a' = 0
+distanciaDeA letra = ord letra - ord 'a'
 
 -- EJ 4
 cifrar :: String -> Int -> String
-cifrar _ _ = "frpsxwdflrq"
+cifrar [] _ = []
+cifrar frase 0 = frase
+cifrar frase n = desplazar (head frase) n : cifrar (tail frase) n
 
 -- EJ 5
 descifrar :: String -> Int -> String
-descifrar _ _ = "computacion"
+descifrar [] _ = []
+descifrar frase 0 = frase
+descifrar frase n = desplazar (head frase) (-n) : descifrar (tail frase) n
 
 -- EJ 6
 cifrarLista :: [String] -> [String]
-cifrarLista _ = ["compu", "mbcp", "kpvtq"]
+cifrarLista [] = []
+--cifrarLista (x:xs) =  
 
+invertirLista :: [String] -> [String] -- /////////// ARREGLAR /////////////////
+invertirLista [] = []
+invertirLista xs = ultimo xs : sacarUltimo xs
+
+sacarUltimo :: [String] -> [String]
+sacarUltimo [x] = []
+sacarUltimo (y:ys) = y : sacarUltimo ys
+
+ultimo :: [String] -> [String]
+ultimo [x] = [x]
+ultimo (y:ys) = ultimo ys
 -- EJ 7
 frecuencia :: String -> [Float]
 frecuencia _ = [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
