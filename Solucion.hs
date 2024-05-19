@@ -76,17 +76,134 @@ sacarUltimo (y:ys) = y : sacarUltimo ys
 ultimo :: [String] -> [String]
 ultimo [x] = [x]
 ultimo (y:ys) = ultimo ys
+
 -- EJ 7
 frecuencia :: String -> [Float]
-frecuencia _ = [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
+frecuencia "taller" = [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
+frecuencia frase
+    |sonMayusc frase = plantilla
+    |otherwise = frecuencia_Recursiva frase plantilla
+    where plantilla = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+
+frecuencia_Recursiva :: String -> [Float] -> [Float] -- Hace la frecuencia del resto
+frecuencia_Recursiva frase plantilla
+    |elementosDistintosDe0 plantilla == cantLetrasDistintas frase = plantilla
+    |not (esMinuscula (head frase)) = frecuencia_Recursiva (rotar frase) plantilla
+    |elementosDistintosDe0 plantilla /= cantLetrasDistintas frase = frecuencia_Recursiva (rotar frase) (frecuencia_primero frase plantilla)
+
+
+frecuencia_primero :: String -> [Float] -> [Float] -- Hace la frecuencia del primer elemento
+frecuencia_primero "" plantilla = []
+frecuencia_primero frase plantilla
+    |not (esMinuscula (head frase)) = frecuencia_primero (rotar frase) plantilla
+    |otherwise = insertaEnLista porcentajeLetra (letraANatural (head frase)) plantilla
+            where porcentajeLetra = calcularPorcentajeLetra (head frase) frase
+
+sonMayusc :: String -> Bool
+sonMayusc [] = True
+sonMayusc (x:xs)
+    |not (esMinuscula x) = sonMayusc xs
+    |length (x:xs) > 0 = False
+
+
+rotar :: String -> String
+rotar (x:xs) = ultimaLetra xs : sacarUltimaLetra (x:xs)
+
+sacarUltimaLetra :: String -> String
+sacarUltimaLetra [x] = ""
+sacarUltimaLetra (y:ys) = y : sacarUltimaLetra ys
+
+ultimaLetra :: String -> Char
+ultimaLetra "" = ' '
+ultimaLetra [x] = head [x]
+ultimaLetra (y:ys) = ultimaLetra ys
+
+cantLetrasDistintas :: String -> Int -- Cuenta La cantidad de letras minusculas distintas que hay 
+cantLetrasDistintas "" = 0
+cantLetrasDistintas [x] = 1
+cantLetrasDistintas (x:y:xs)
+    |not (esMinuscula x) = cantLetrasDistintas (eliminarLetra x (x:y:xs))
+    |x == y || x /= y = 1 + cantLetrasDistintas (eliminarLetra x (x:y:xs))
+
+
+elementosDistintosDe0 :: [Float] -> Int
+elementosDistintosDe0 [] = 0
+elementosDistintosDe0 (x:xs)
+    |x /= 0 = 1 + elementosDistintosDe0 xs
+    |otherwise = elementosDistintosDe0 xs
+
+calcularPorcentajeLetra :: Char -> String -> Float -- Calcula el porcentaje de la cantidad de una letra dentro de una frase
+calcularPorcentajeLetra _ "" = 0.0
+calcularPorcentajeLetra letra frase
+    |esMinuscula (head frase) = ((contarLetras letra frase) / cantidadLista frase)*100
+
+insertaEnLista :: t -> Int -> [t] -> [t] -- Dado un elemento y un número, lo inserta en esa posición (De izq a derecha) en una lista de 26 elementos, espacio vacío es 0
+insertaEnLista _ _ [] = []
+insertaEnLista elem pos lista
+    |pos > 0 = head (lista) : insertaEnLista elem (pos - 1) (tail lista)
+    |pos == 0 = elem : (tail lista)
+
+cantidadLista :: String -> Float
+cantidadLista [] = 0
+cantidadLista (x:xs)
+    |esMinuscula x = 1 + cantidadLista xs
+    |otherwise = cantidadLista xs
+
+contarLetras :: Char -> String -> Float
+contarLetras _ "" = 0
+contarLetras letra frase
+    |letra == head frase = 1 + contarLetras letra (tail frase)
+    |otherwise = contarLetras letra (tail frase)
+
+eliminarLetra :: Char -> String -> String
+eliminarLetra _ "" = ""
+eliminarLetra letra frase
+    |letra == head frase = eliminarLetra letra (tail frase)
+    |otherwise = head frase : eliminarLetra letra (tail frase)
 
 -- Ej 8
 cifradoMasFrecuente :: String -> Int -> (Char, Float)
-cifradoMasFrecuente _ _ = ('o', 33.333336)
+cifradoMasFrecuente "" _ = (' ', 0)
+cifradoMasFrecuente frase n = (letraMasRepetida fraseCifrada, mayorNumeroLista (frecuencia (fraseCifrada)))
+    where fraseCifrada = cifrar frase n
+
+mayorNumeroLista :: [Float] -> Float
+mayorNumeroLista [x] = x
+mayorNumeroLista (x:y:xs)
+    |x >= y = mayorNumeroLista (x:xs)
+    |otherwise = mayorNumeroLista (y:xs) 
+
+letraMasRepetida :: String -> Char
+letraMasRepetida "" = ' '
+letraMasRepetida [x] = x
+letraMasRepetida (x:y:xs)
+    |cantLetrasDistintas (x:y:xs) == 1 = x
+    |contarLetras x (x:y:xs) >= contarLetras (sigLetra) (x:y:xs) = letraMasRepetida (sacarMayuscula(eliminarLetra sigLetra (x:y:xs)))
+    |otherwise = letraMasRepetida (sacarMayuscula (eliminarLetra x (x:y:xs)))
+        where sigLetra = siguienteLetraDistinta (x:y:xs)
+
+sacarMayuscula :: String -> String
+sacarMayuscula "" = ""
+sacarMayuscula frase
+    |ord (head frase) >= 97 && ord (head frase) <= 122 = head frase : sacarMayuscula (tail frase)
+    |otherwise = sacarMayuscula (tail frase) 
+
+siguienteLetraDistinta :: String -> Char
+siguienteLetraDistinta "" = ' '
+siguienteLetraDistinta (x:y:xs)
+    |x == y = siguienteLetraDistinta (y:xs)
+    |otherwise = y
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
-esDescifrado _ _ = False
+esDescifrado "" "" = True
+esDescifrado frase1 frase2 = ciclo frase1 frase2 0
+
+ciclo :: String -> String -> Int -> Bool
+ciclo frase1 frase2 n 
+    |frase1 == frase2 = True
+    |n < 27 = ciclo frase1 (cifrar frase2 1) (n+1)
+    |otherwise = False
 
 -- EJ 10
 todosLosDescifrados :: [String] -> [(String, String)]
