@@ -10,35 +10,86 @@ import Data.Char
 
 -- EJ 1
 esMinuscula :: Char -> Bool
-esMinuscula _ = True
-
+esMinuscula x | ord x >= 97 && ord x <= 122 = True
+              | otherwise = False
 -- EJ 2
 letraANatural :: Char -> Int
-letraANatural _ = 1
+letraANatural c = ord c - 97
 
 -- EJ 3
 desplazar :: Char -> Int -> Char
-desplazar _ _ = 'd'
+desplazar c n
+    |not (esMinuscula c) = c
+    |otherwise = chr (97 + mod (letraANatural c + n) 26)
 
 -- EJ 4
 cifrar :: String -> Int -> String
-cifrar _ _ = "frpsxwdflrq"
+cifrar [] _ = []
+cifrar (x:xs) n = desplazar x n : cifrar xs n
 
 -- EJ 5
 descifrar :: String -> Int -> String
-descifrar _ _ = "computacion"
+descifrar [] _ = []
+descifrar (x:xs) n = desplazar x (-n) : descifrar xs n
 
 -- EJ 6
+cifrarListaAux :: [String] -> Int -> Int -> [String]
+cifrarListaAux [] _ _ = []
+cifrarListaAux (l:ls) desde hasta
+    |desde < hasta = cifrar l desde: cifrarListaAux ls  (desde+1) hasta
+
+
 cifrarLista :: [String] -> [String]
-cifrarLista _ = ["compu", "mbcp", "kpvtq"]
+cifrarLista lista = cifrarListaAux lista  0  (length lista)
 
 -- EJ 7
+pertenece ::(Eq t)=>t -> [t] -> Bool
+pertenece _ [] = False
+pertenece e (x:xs)
+    |e==x = True
+    |otherwise = pertenece e xs
+
+contarMinusculas :: String -> Float
+contarMinusculas [] = 0
+contarMinusculas (x:xs)
+    | esMinuscula x = 1 + contarMinusculas xs
+    |otherwise = contarMinusculas xs
+
+cuantasVecesAparece ::(Eq t) => t -> [t] -> Float
+cuantasVecesAparece _ [] = 0
+cuantasVecesAparece e (x:xs)
+    |e==x = 1 + cuantasVecesAparece e xs
+    |otherwise = cuantasVecesAparece e xs
+
+frecuenciaAux :: String -> Int -> Int -> [Float]
+frecuenciaAux frase k n
+    |k==n+1 = []
+    |pertenece letra frase = (cuantasVecesAparece letra frase)/ (contarMinusculas frase)*100 : frecuenciaAux frase (k+1) n
+    |otherwise = 0.0 : frecuenciaAux frase (k+1) n
+    where
+        letra = chr (97+k)
+
 frecuencia :: String -> [Float]
-frecuencia _ = [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
+frecuencia frase = frecuenciaAux frase 0 25
 
 -- Ej 8
-cifradoMasFrecuente :: String -> Int -> (Char, Float)
-cifradoMasFrecuente _ _ = ('o', 33.333336)
+indice :: (Eq t)=> t ->[t]-> Int
+indice e (x:xs)
+    |e==x= 0
+    |otherwise = 1 + indice e xs
+
+--requiere que e pertenezca a la lista
+
+
+maximo ::(Ord t)=> [t] -> t
+maximo (x:xs)
+    |xs ==[] = x
+    |x > head (xs) = maximo (x:tail (xs))
+    |otherwise = maximo xs
+
+
+cifradoMasFrecuente:: String -> Int -> (Char,Float)
+cifradoMasFrecuente frase n = (chr (97 + indice (maximo (frecuencia (cifrar frase n))) (frecuencia (cifrar frase n))), maximo (frecuencia (cifrar frase n)))
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
