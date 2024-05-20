@@ -74,8 +74,25 @@ frecuencia :: String -> [Float]
 frecuencia frase = frecuenciaAux frase 0 25
 
 -- Ej 8
-cifradoMasFrecuente :: String -> Int -> (Char, Float)
-cifradoMasFrecuente _ _ = ('o', 33.333336)
+indice :: (Eq t)=> t ->[t]-> Int
+indice e (x:xs)
+    |e==x= 0
+    |otherwise = 1 + indice e xs
+
+--requiere que e pertenezca a la lista
+
+
+maximo ::(Ord t)=> [t] -> t
+maximo [n] = n
+maximo (x:xs)
+    |x > head(xs) = maximo(x:tail(xs))
+    |otherwise = maximo xs 
+
+
+cifradoMasFrecuente:: String -> Int -> (Char,Float)
+cifradoMasFrecuente frase n = (chr(97 + indice(maximo(frecuencia(cifrar frase n))) (frecuencia(cifrar frase n))), maximo(frecuencia(cifrar frase n)))
+  
+
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
