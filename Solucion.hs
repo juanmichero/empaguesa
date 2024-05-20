@@ -63,18 +63,24 @@ descifrar frase n = desplazar (head frase) (-n) : descifrar (tail frase) n
 -- EJ 6
 cifrarLista :: [String] -> [String]
 cifrarLista [] = []
---cifrarLista (x:xs) =  
+cifrarLista [x] = [x]
+cifrarLista xs = invertirLista (cifroInverso xs)
 
-invertirLista :: [String] -> [String] -- /////////// ARREGLAR /////////////////
+cifroInverso :: [String] -> [String]
+cifroInverso [] = []
+cifroInverso [x] = [x]
+cifroInverso (x:xs) = cifrar (ultimo xs) (length xs) : cifroInverso (sacarUltimo (x:xs))
+
+invertirLista :: [String] -> [String]
 invertirLista [] = []
-invertirLista xs = ultimo xs : sacarUltimo xs
+invertirLista xs = ultimo xs : invertirLista (sacarUltimo xs)
 
 sacarUltimo :: [String] -> [String]
 sacarUltimo [x] = []
 sacarUltimo (y:ys) = y : sacarUltimo ys
 
-ultimo :: [String] -> [String]
-ultimo [x] = [x]
+ultimo :: [String] -> String
+ultimo [x] = x
 ultimo (y:ys) = ultimo ys
 
 -- EJ 7
@@ -265,10 +271,24 @@ descifrarVigenere frase "" = frase
 descifrarVigenere frase1 frase2 = primeraLetra : descifrarSiguienteLetra
     where primeraLetra = desplazar (head frase1) ((letraANatural(head frase2))*(-1))
           descifrarSiguienteLetra = descifrarVigenere (tail frase1) (tail (expandirClave frase2 (length frase1)))
+    
+
 
 -- EJ 14
 peorCifrado :: String -> [String] -> String
-peorCifrado _ _ = "asdef"
+peorCifrado "" _ = ""
+peorCifrado frase [x] = x
+peorCifrado frase (x:y:claves) -- Compara la distancia de secuencia de la primera clave con la segunda
+    |x == "a" || y == "a" = "a"
+    |primeraClave <= segundaClave = peorCifrado frase (x:claves)
+    |otherwise = peorCifrado frase (y:claves)
+        where primeraClave = distanciaSecuencias frase (cifrarVigenere frase x) 
+              segundaClave = distanciaSecuencias frase (cifrarVigenere frase y)
+
+distanciaSecuencias :: String -> String -> Int
+distanciaSecuencias "" "" = 0
+distanciaSecuencias frase1 frase2 = diferenciaHeads + distanciaSecuencias (tail frase1) (tail frase2)
+    where diferenciaHeads = (letraANatural (head frase1)) - (letraANatural (head frase2))
 
 -- EJ 15
 combinacionesVigenere :: [String] -> [String] -> String -> [(String, String)]
