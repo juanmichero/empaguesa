@@ -99,7 +99,13 @@ cifradoMasFrecuente frase n = (chr (97 + indice (maximo (frecuencia (cifrar fras
 
 --9
 esDescifrado :: String -> String -> Bool
-esDescifrado _ _ = False
+esDescifrado frase fraseCifrada = esDescifradoAux frase fraseCifrada 0 25
+
+esDescifradoAux:: String -> String -> Int -> Int -> Bool
+esDescifradoAux frase fraseCifrada k n
+    |k>n = False
+    |cifrar frase k == fraseCifrada = True
+    |otherwise = True && esDescifradoAux frase fraseCifrada (k+1) n 
 
 -- 10
 todosLosDescifrados :: [String] -> [(String, String)]
