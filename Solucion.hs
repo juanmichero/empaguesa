@@ -44,8 +44,34 @@ cifrarListaAux [] _ _  = []
 cifrarListaAux (l:ls) longitud it
     |it < longitud = cifrar l it : cifrarListaAux ls longitud (it+1)
 -- EJ 7
+pertenece ::(Eq t)=>t -> [t] -> Bool
+pertenece _ [] = False
+pertenece e (x:xs)
+    |e==x = True
+    |otherwise = pertenece e xs
+
+contarMinusculas :: String -> Int
+contarMinusculas [] = 0
+contarMinusculas (x:xs)
+    | esMinuscula x = 1 + contarMinusculas xs
+    |otherwise = contarMinusculas xs
+
+cuantasVecesAparece ::(Eq t) => t -> [t] -> Int
+cuantasVecesAparece _ [] = 0
+cuantasVecesAparece e (x:xs)
+    |e==x = 1 + cuantasVecesAparece e xs
+    |otherwise = cuantasVecesAparece e xs
+
+frecuenciaAux :: String -> Int -> Int -> [Float]
+frecuenciaAux frase k n 
+    |k==n+1 = []
+    |pertenece letra frase = (fromIntegral(cuantasVecesAparece letra frase)*100/ fromIntegral(contarMinusculas frase) ): frecuenciaAux frase (k+1) n
+    |otherwise = 0.0 : frecuenciaAux frase (k+1) n 
+    where
+        letra = chr (97+k)
+        
 frecuencia :: String -> [Float]
-frecuencia _ = [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
+frecuencia frase = frecuenciaAux frase 0 25
 
 -- Ej 8
 cifradoMasFrecuente :: String -> Int -> (Char, Float)
