@@ -74,9 +74,12 @@ testsEjcifrarLista = test [
     ]
 
 testsEjfrecuencia = test [
-    expectlistProximity (frecuencia "taller") [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
-    expectlistProximity (frecuencia "TALLER") [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0], -- Para todo caracter que no sea letras minúsculas, su valor es 0.0
-    expectlistProximity (frecuencia "az") [50.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0]
+    expectlistProximity (frecuencia "taller") [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0],
+    expectlistProximity (frecuencia "FEFaEF") [100.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+    expectlistProximity (frecuencia "TALLER") [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0], 
+    expectlistProximity (frecuencia "") [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+    expectlistProximity (frecuencia "az") [50.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0],
+    expectlistProximity (frecuencia "abc") [33.33336,33.33336,33.33336,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]   
     ]
 
 testsEjcifradoMasFrecuente = test [
@@ -87,11 +90,23 @@ testsEjcifradoMasFrecuente = test [
     ]
 
 testsEjesDescifrado = test [
-    esDescifrado "taller" "compu" ~?= False
+    esDescifrado "taller" "compu" ~?= False,
+    esDescifrado "ABCE" "ZABD" ~?= False,
+    esDescifrado "ABCE" "zabd" ~?= False,
+    esDescifrado "Hola" "Hvsh" ~?= True,
+    esDescifrado "xyz" "abc" ~?= True,
+    esDescifrado "xyz" "ab" ~?= False,
+    esDescifrado "" "" ~?= True,
+    esDescifrado "a8d9" "y8b9" ~?= True
     ]
 
 testsEjtodosLosDescifrados = test [
-    todosLosDescifrados ["compu", "frpsx", "mywza"] ~?= [("compu", "frpsx"), ("frpsx", "compu")]
+    todosLosDescifrados ["compu", "frpsx", "mywza"] ~?= [("compu", "frpsx"), ("frpsx", "compu")],
+    todosLosDescifrados ["Hola", "Hpmb", "hola"] ~?= [("Hola","Hpmb"),("Hpmb","Hola")],
+    todosLosDescifrados [("Hola")] ~?= [],
+    todosLosDescifrados [("qwer"),("hola")] ~?= [],
+    --arreglar la funcion para este caso
+    expectPermutacion (todosLosDescifrados ["abc", "bcd","cde"]) [("abc", "bcd"), ("abc","cde"),("bcd","abc"),("cde","abc"),("bcd","cde"),("cde","bcd")]
     ]
 
 testsEjexpandirClave = test [
