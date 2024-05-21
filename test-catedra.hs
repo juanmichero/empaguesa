@@ -65,19 +65,25 @@ testsEjtodosLosDescifrados = test [
     ]
 
 testsEjexpandirClave = test [
-    expandirClave "compu" 8 ~?= "compucom"
+    expandirClave "compu" 8 ~?= "compucom",
+    "n es igual a la longitud de la frase" ~: expandirClave "naranja" 7 ~?= "naranja",
+    "n == 1 (primera letra)" ~: expandirClave "laboratorio" 1 ~?= "l"
     ]
 
 testsEjcifrarVigenere = test [
-    cifrarVigenere "computacion" "ip" ~?= "kdueciirqdv"
+    cifrarVigenere "computacion" "ip" ~?= "kdueciirqdv",
+    "frase vacia y clave generica" ~: cifrarVigenere "" "aofk" ~?= "",
+    "clave == a (devuelve la misma frase)" ~: cifrarVigenere "congruencia" "a" ~?= "congruencia"
     ]
 
 testsEjdescifrarVigenere = test [
-    descifrarVigenere "kdueciirqdv" "ip" ~?= "computacion"
+    descifrarVigenere "kdueciirqdv" "ip" ~?= "computacion",
+    "frase vacia y clave generica" ~: descifrarVigenere "" "gjk" ~?= "",
+    "clave == a (no desplaza)" ~: descifrarVigenere "palabra" "a" ~?= "palabra" 
     ]
 
 testsEjpeorCifrado = test [
-    peorCifrado "computacion" ["ip", "asdef", "ksy"] ~?= "asdef"
+    peorCifrado "computacion" ["ip", "asdef", "ksy"] ~?= "asdef",
     "|claves| == 1 con clave generica" ~: peorCifrado "casa" ["afk"] ~?= "afk",
     "'a' esta en claves (no desplaza)" ~: peorCifrado "computacion" ["ip", "asdef", "a", "ksy"] ~?= "a",
     "Hay empate en distancias" ~: expectAny (peorCifrado "frase" ["jklmn", "lkmnj", "nmlkj"]) ["jklmn", "lkmnj", "nmlkj"],
