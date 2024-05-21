@@ -93,7 +93,6 @@ cifradoMasFrecuente frase n = (chr (97 + indice (maximo (frecuencia (cifrar fras
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
-esDescifrado "" "" = True
 esDescifrado frase1 frase2 = ciclo frase1 frase2 0
 
 ciclo :: String -> String -> Int -> Bool
