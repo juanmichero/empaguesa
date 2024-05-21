@@ -85,7 +85,7 @@ ultimo (y:ys) = ultimo ys
 
 -- EJ 7
 frecuencia :: String -> [Float]
-frecuencia "taller" = [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
+frecuencia "" = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 frecuencia frase
     |sonMayusc frase = plantilla
     |otherwise = frecuencia_Recursiva frase plantilla
@@ -202,7 +202,7 @@ siguienteLetraDistinta (x:y:xs)
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
-esDescifrado "" "" = True
+--esDescifrado "" "" = True
 esDescifrado frase1 frase2 = ciclo frase1 frase2 0
 
 ciclo :: String -> String -> Int -> Bool
@@ -273,22 +273,26 @@ descifrarVigenere frase1 frase2 = primeraLetra : descifrarSiguienteLetra
           descifrarSiguienteLetra = descifrarVigenere (tail frase1) (tail (expandirClave frase2 (length frase1)))
     
 
-
 -- EJ 14
 peorCifrado :: String -> [String] -> String
 peorCifrado "" _ = ""
 peorCifrado frase [x] = x
 peorCifrado frase (x:y:claves) -- Compara la distancia de secuencia de la primera clave con la segunda
     |x == "a" || y == "a" = "a"
-    |primeraClave <= segundaClave = peorCifrado frase (x:claves)
-    |otherwise = peorCifrado frase (y:claves)
-        where primeraClave = distanciaSecuencias frase (cifrarVigenere frase x) 
-              segundaClave = distanciaSecuencias frase (cifrarVigenere frase y)
+    |primeraClave <= segundaClave = peorCifrado frase (y:claves)
+    |otherwise = peorCifrado frase (x:claves)
+        where primeraClave = absoluto (distanciaSecuencias frase (cifrarVigenere frase x)) 
+              segundaClave = absoluto (distanciaSecuencias frase (cifrarVigenere frase y))
 
-distanciaSecuencias :: String -> String -> Int
+distanciaSecuencias :: String -> String -> Int -- Distancia desde frase1 hasta frase2
 distanciaSecuencias "" "" = 0
 distanciaSecuencias frase1 frase2 = diferenciaHeads + distanciaSecuencias (tail frase1) (tail frase2)
-    where diferenciaHeads = (letraANatural (head frase1)) - (letraANatural (head frase2))
+    where diferenciaHeads = ((letraANatural (head frase1)) - (letraANatural (head frase2)))
+
+absoluto :: Int -> Int -- funcion para dar el valor absoluto de la distancia
+absoluto n
+    |n >= 0 = n
+    |otherwise = -n
 
 -- EJ 15
 combinacionesVigenere :: [String] -> [String] -> String -> [(String, String)]
