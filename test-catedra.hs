@@ -78,6 +78,10 @@ testsEjdescifrarVigenere = test [
 
 testsEjpeorCifrado = test [
     peorCifrado "computacion" ["ip", "asdef", "ksy"] ~?= "asdef"
+    "|claves| == 1 con clave generica" ~: peorCifrado "casa" ["afk"] ~?= "afk",
+    "'a' esta en claves (no desplaza)" ~: peorCifrado "computacion" ["ip", "asdef", "a", "ksy"] ~?= "a",
+    "Hay empate en distancias" ~: expectAny (peorCifrado "frase" ["jklmn", "lkmnj", "nmlkj"]) ["jklmn", "lkmnj", "nmlkj"],
+    "frase vacia (no hay peorCifrado)" ~: peorCifrado "" ["ip", "qwerty", "slm"] ~?= ""
     ]
 
 testsEjcombinacionesVigenere = test [
