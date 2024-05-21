@@ -80,7 +80,10 @@ testsEjfrecuencia = test [
     ]
 
 testsEjcifradoMasFrecuente = test [
-    cifradoMasFrecuente "taller" 3 ~?= ('o', 33.333336)
+    cifradoMasFrecuente "taller" 3 ~?= ('o', 33.333336),
+     "caso una sola letra" ~: cifradoMasFrecuente "a" 1 ~?= ('b', 100.0),
+    "caso empate" ~: expectAny (cifradoMasFrecuente "aabb" 2) [('c', 50.0),('d', 50.0)],
+    "caso empate con caracteres especiales" ~: expectAny (cifradoMasFrecuente "aaDbb" 1) [('b', 50.0),('c', 50.0)]
     ]
 
 testsEjesDescifrado = test [
