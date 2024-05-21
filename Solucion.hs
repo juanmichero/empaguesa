@@ -292,4 +292,15 @@ distanciaSecuencias frase1 frase2 = diferenciaHeads + distanciaSecuencias (tail 
 
 -- EJ 15
 combinacionesVigenere :: [String] -> [String] -> String -> [(String, String)]
-combinacionesVigenere _ _ _ = [("hola", "b")]
+combinacionesVigenere [] [] _ = []
+combinacionesVigenere [] _  _ = [] -- Caso base necesario para el paso recursivo 
+combinacionesVigenere frases claves cifrado = combinacionesVigPalabra frase claves cifrado ++ combinacionesVigenere restoFrases claves cifrado
+    where clave = head claves
+          frase = head frases
+          restoFrases = tail frases
+
+combinacionesVigPalabra :: String -> [String] -> String -> [(String, String)] -- combinacionesVigenere en una palabra, para poder hacer el paso recursivo
+combinacionesVigPalabra _ [] _ = []
+combinacionesVigPalabra frase claves cifrado
+    |cifrarVigenere frase (head claves) == cifrado = (frase, head claves) : combinacionesVigPalabra frase (tail claves) cifrado
+    |otherwise = combinacionesVigPalabra frase (tail claves) cifrado
