@@ -214,14 +214,21 @@ ciclo frase1 frase2 n
 -- EJ 10 
 todosLosDescifrados :: [String] -> [(String, String)]
 todosLosDescifrados [] = []
-todosLosDescifrados lista = descifradosLista lista 0
+todosLosDescifrados lista = eliminarRepetidos (descifradosLista lista 0)
+
+eliminarRepetidos:: (Eq t) => [t] -> [t]
+eliminarRepetidos [] = []
+eliminarRepetidos (x:xs)
+    |elem x xs = eliminarRepetidos xs
+    |otherwise = x : eliminarRepetidos xs
 
 descifradosLista :: [String] -> Int -> [(String, String)]
 descifradosLista lista n 
-    |n == length lista = []
-    |cifradoEnLista (head lista) (tail lista) = tuplaCifrado : descifradosLista rotarLista (n+1)
+    |n == (length lista) = []
+    |cifradoEnLista (head lista) (tail lista) = (tuplaCifrado : tuplaCifradoInv : descifradosLista rotarLista (n+1))
     |otherwise = descifradosLista rotarLista (n+1)
         where tuplaCifrado = (head lista, cifrado (head lista) (tail lista))
+              tuplaCifradoInv = (cifrado (head lista) (tail lista), head lista)
               rotarLista = (tail lista) ++ [(head lista)]
 
 cifrado :: String -> [String] -> String -- Dado un String y una lista, da el cifrado o descifrado de cualquiera de sus pasos, de no haberlo, da un espacio en blanco
