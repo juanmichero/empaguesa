@@ -101,7 +101,8 @@ testsEjtodosLosDescifrados = test [
     expectPermutacion (todosLosDescifrados ["Hola", "Hpmb", "hola"]) [("Hola","Hpmb"),("Hpmb","Hola")],
     todosLosDescifrados [("Hola")] ~?= [],
     todosLosDescifrados [("qwer"),("hola")] ~?= [],
-    expectPermutacion (todosLosDescifrados ["abc", "bcd","cde"]) [("abc", "bcd"), ("abc","cde"),("bcd","abc"),("cde","abc"),("bcd","cde"),("cde","bcd")]
+    expectPermutacion (todosLosDescifrados ["abc", "bcd","cde"]) [("abc", "bcd"), ("abc","cde"),("bcd","abc"),("cde","abc"),("bcd","cde"),("cde","bcd")],
+    expectPermutacion (todosLosDescifrados ["abc","bc","cde"]) [("abc", "cde"),("cde","abc")]
     ]
 
 testsEjexpandirClave = test [
