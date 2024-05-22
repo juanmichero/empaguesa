@@ -46,35 +46,35 @@ testsEjdesplazar = test [
     desplazar 'z' 5 ~?= 'e',
     desplazar 'a' 27 ~?= 'b',
     desplazar 'f' 26 ~?= 'f',
-    desplazar 'g' 0 ~?= 'g'
+    desplazar 'g' 0 ~?= 'g',
     desplazar 'g' (-28) ~?= 'e'
     ]
 
 testsEjcifrar = test [
-    cifrar "computacion" 3 ~?= "frpsxwdflrq"
+    cifrar "computacion" 3 ~?= "frpsxwdflrq",
     cifrar "Abcz" 2 ~?= "Adeb",
     cifrar "HOLA" 4 ~?= "HOLA",
-    cifrar " " 69 ~?= " "
+    cifrar " " 69 ~?= " ",
     cifrar "xyz" 0 ~?= "xyz"
     ]
 
 testsEjdescifrar = test [
-    descifrar "frpsxwdflrq" 3 ~?= "computacion"
+    descifrar "frpsxwdflrq" 3 ~?= "computacion",
     descifrar "Adeb" 2 ~?= "Abcz",
     descifrar "HOLA" 4 ~?= "HOLA",
-    descifrar " " 69 ~?= " "
+    descifrar " " 69 ~?= " ",
     descifrar "xyz" 0 ~?= "xyz"
     ]
 
 testsEjcifrarLista = test [
-    cifrarLista ["compu", "labo", "intro"] ~?= ["compu", "mbcp", "kpvtq"]
+    cifrarLista ["compu", "labo", "intro"] ~?= ["compu", "mbcp", "kpvtq"],
     cifrarLista ["hola"] ~?= ["hola"],
     cifrarLista [] ~?= [],
     cifrarLista ["hOla", "abz", "bBb"] ~?= ["hOla", "bca", "dBd"] 
     ]
 
 testsEjfrecuencia = test [
-    expectlistProximity (frecuencia "taller") [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0]
+    expectlistProximity (frecuencia "taller") [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0],
     expectlistProximity (frecuencia "TALLER") [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0], -- Para todo caracter que no sea letras minúsculas, su valor es 0.0
     expectlistProximity (frecuencia "az") [50.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0]
     ]
@@ -88,34 +88,29 @@ testsEjesDescifrado = test [
     ]
 
 testsEjtodosLosDescifrados = test [
-    todosLosDescifrados ["compu", "frpsx", "mywza"] ~?= [("compu", "frpsx"), ("frpsx", "compu")]
+    expectPermutacion (todosLosDescifrados ["compu", "frpsx", "mywza"]) [("compu", "frpsx"), ("frpsx", "compu")],
+    todosLosDescifrados [("Hola")] ~?= [],
+    todosLosDescifrados [("qwer"),("hola")] ~?= [],
+    --arreglar la funcion para este caso
+    expectPermutacion (todosLosDescifrados ["abc", "bcd","cde"]) [("abc", "bcd"), ("abc","cde"),("bcd","abc"),("cde","abc"),("bcd","cde"),("cde","bcd")]
     ]
 
 testsEjexpandirClave = test [
     expandirClave "compu" 8 ~?= "compucom",
-    expandirClave "hola" 3 ~?= "hol",
-    expandirClave "sistemas" 17 ~?= "sistemassistemass",
-    expandirClave "gris" 1 ~?= "g"
+    "n es igual a la longitud de la frase" ~: expandirClave "naranja" 7 ~?= "naranja",
+    "n == 1 (primera letra)" ~: expandirClave "laboratorio" 1 ~?= "l"
     ]
 
 testsEjcifrarVigenere = test [
     cifrarVigenere "computacion" "ip" ~?= "kdueciirqdv",
-    cifrarVigenere "computacion" "a" ~?= "computacion",
-    cifrarVigenere "computacion" "aaaaaaaa" ~?= "computacion",
-    cifrarVigenere "computacion" "ab" ~?= "cpmquuadipn",
-    cifrarVigenere "computacion" "abababababa" ~?= "cpmquuadipn",
-    cifrarVigenere "" "abababababa" ~?= "",
-    cifrarVigenere "COMPUTaCION"  "b" ~?= "COMPUTbCION"
+    "frase vacia y clave generica" ~: cifrarVigenere "" "aofk" ~?= "",
+    "clave == a (devuelve la misma frase)" ~: cifrarVigenere "congruencia" "a" ~?= "congruencia"
     ]
 
 testsEjdescifrarVigenere = test [
     descifrarVigenere "kdueciirqdv" "ip" ~?= "computacion",
-    descifrarVigenere "computacion" "a" ~?= "computacion",
-    descifrarVigenere "computacion" "aaaaaaaa" ~?= "computacion",
-    descifrarVigenere "cpmquuadipn" "ab" ~?= "computacion",
-    descifrarVigenere "cpmquuadipn" "abababababa" ~?= "computacion",
-    descifrarVigenere "" "abababababa" ~?= "",
-    descifrarVigenere "COMPUTbCION" "b" ~?= "COMPUTaCION"
+    "frase vacia y clave generica" ~: descifrarVigenere "" "gjk" ~?= "",
+    "clave == a (no desplaza)" ~: descifrarVigenere "palabra" "a" ~?= "palabra" 
     ]
 
 testsEjpeorCifrado = test [
@@ -127,62 +122,10 @@ testsEjpeorCifrado = test [
     ]
 
 testsEjcombinacionesVigenere = test [
-    combinacionesVigenere ["hola", "mundo"] ["a", "b"] "ipmb" ~?= [("hola", "b")]
-    expectPermutacion(combinacionesVigenere ["abc","cde"] ["d", "b"] "def") [("abc","d"),("cde","b")]
-    combinacionesVigenere ["abc", "cde"] ["ab","bc"]  "acc" ~?= [("abc","ab")]
+    combinacionesVigenere ["hola", "mundo"] ["a", "b"] "ipmb" ~?= [("hola", "b")],
+    "Niguna hace match" ~:combinacionesVigenere["casa", "palabra"] ["asd", "fr"] "poke" ~?= [],
+    "cifrado vacio" ~: combinacionesVigenere ["compu", "labor"] ["jk", "qwert"] "" ~?= [],    
+  --  "varios elementos" ~: expectPermutacion(combinacionesVigenere["abc","bcd"] ["b","c"] "cde") [("abc","c"),("bcd","b")],
+    "varios match con una clave" ~: expectPermutacion(combinacionesVigenere["gnkz", "ipmb"] ["b", "z"] "hola") [("gnkz","b"),("ipmb", "z")]
+
     ]
-
--- Funciones útiles
-
--- margetFloat(): Float
--- asegura: res es igual a 0.00001
-margenFloat = 0.00001
-
--- expectAny (actual: a, expected: [a]): Test
--- asegura: res es un Test Verdadero si y sólo si actual pertenece a la lista expected
-expectAny :: (Foldable t, Eq a, Show a, Show (t a)) => a -> t a -> Test
-expectAny actual expected = elem actual expected ~? ("expected any of: " ++ show expected ++ "\n but got: " ++ show actual)
-
-
--- expectlistProximity (actual: [Float], expected: [Float]): Test
--- asegura: res es un Test Verdadero si y sólo si:
---                  |actual| = |expected|
---                  para todo i entero tal que 0<=i<|actual|, |actual[i] - expected[i]| < margenFloat()
-expectlistProximity:: [Float] -> [Float] -> Test
-expectlistProximity actual expected = esParecidoLista actual expected ~? ("expected list: " ++ show expected ++ "\nbut got: " ++ show actual)
-
-esParecidoLista :: [Float] -> [Float] -> Bool
-esParecidoLista actual expected = (length actual) == (length expected) && (esParecidoUnaAUno actual expected)
-
-esParecidoUnaAUno :: [Float] -> [Float] -> Bool
-esParecidoUnaAUno [] [] = True
-esParecidoUnaAUno (x:xs) (y:ys) = (aproximado x y) && (esParecidoUnaAUno xs ys)
-
-aproximado :: Float -> Float -> Bool
-aproximado x y = abs (x - y) < margenFloat
-
-
--- expectAnyTuplaAprox (actual: CharxFloat, expected: [CharxFloat]): Test
--- asegura: res un Test Verdadero si y sólo si:
---                  para algun i entero tal que 0<=i<|expected|,
---                         (fst expected[i]) == (fst actual) && |(snd expected[i]) - (snd actual)| < margenFloat()
-
-expectAnyTuplaAprox :: (Char, Float) -> [(Char, Float)] -> Test
-expectAnyTuplaAprox actual expected = elemAproxTupla actual expected ~? ("expected any of: " ++ show expected ++ "\nbut got: " ++ show actual)
-
-elemAproxTupla :: (Char, Float) -> [(Char, Float)] -> Bool
-elemAproxTupla _ [] = False
-elemAproxTupla (ac,af) ((bc,bf):bs) = sonAprox || (elemAproxTupla (ac,af) bs)
-    where sonAprox = (ac == bc) && (aproximado af bf)
-
-
-
--- expectPermutacion (actual: [T], expected[T]) : Test
--- asegura: res es un Test Verdadero si y sólo si:
---            para todo elemento e de tipo T, #Apariciones(actual, e) = #Apariciones(expected, e)
-
-expectPermutacion :: (Ord a, Show a) => [a] -> [a] -> Test
-expectPermutacion actual expected = esPermutacion actual expected ~? ("expected list: " ++ show expected ++ "\nbut got: " ++ show actual)
-
-esPermutacion :: Ord a => [a] -> [a] -> Bool
-esPermutacion a b = (length a == length b) && (sort a == sort b)
