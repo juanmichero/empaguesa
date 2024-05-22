@@ -56,7 +56,7 @@ frecuenciaAux frase desde hasta
         letra = chr (97+desde)
 
 --evalua si un elemento pertenece o no a la lista
-pertenece ::(Eq t)=>t -> [t] -> Bool
+pertenece :: (Eq t) => t -> [t] -> Bool
 pertenece _ [] = False
 pertenece e (x:xs)
     | e == x = True
@@ -71,36 +71,36 @@ contarMinusculas (x:xs)
 
 
 -- dado un elemento y una lista devuelve cuantas veces aparece en la lista
-cuantasVecesAparece ::(Eq t) => t -> [t] -> Float
+cuantasVecesAparece :: (Eq t) => t -> [t] -> Float
 cuantasVecesAparece _ [] = 0
 cuantasVecesAparece e (x:xs)
     | e == x = 1 + cuantasVecesAparece e xs
     | otherwise = cuantasVecesAparece e xs
 
 -- Ej 8
-cifradoMasFrecuente:: String -> Int -> (Char,Float)
-cifradoMasFrecuente frase n = (chr (97 + indice (maximo (frecuencia (cifrar frase n))) (frecuencia (cifrar frase n))), maximo (frecuencia (cifrar frase n)))
+cifradoMasFrecuente :: String -> Int -> (Char, Float)
+cifradoMasFrecuente frase num = (chr (97 + indice (maximo (frecuencia (cifrar frase num))) (frecuencia (cifrar frase num))), maximo (frecuencia (cifrar frase num)))
 
-indice :: (Eq t)=> t ->[t]-> Int
+indice :: (Eq t) => t -> [t] -> Int
 indice e (x:xs)
     | e == x = 0
     | otherwise = 1 + indice e xs
 
-maximo ::(Ord t)=> [t] -> t
+maximo :: (Ord t) => [t] -> t
 maximo (x:xs)
-    |xs ==[] = x
-    |x > head (xs) = maximo (x:tail (xs))
-    |otherwise = maximo xs
+    | xs == [] = x
+    | x > head (xs) = maximo (x : tail (xs))
+    | otherwise = maximo xs
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
 esDescifrado frase1 frase2 = ciclo frase1 frase2 0
 
 ciclo :: String -> String -> Int -> Bool
-ciclo frase1 frase2 n 
-    |frase1 == frase2 = True
-    |n < 27 = ciclo frase1 (cifrar frase2 1) (n+1)
-    |otherwise = False
+ciclo frase1 frase2 num 
+    | frase1 == frase2 = True
+    | num < 27 = ciclo frase1 (cifrar frase2 1) (num + 1)
+    | otherwise = False
 
 -- EJ 10 
 todosLosDescifrados :: [String] -> [(String, String)]
@@ -111,15 +111,15 @@ todosLosDescifrados lista = eliminarRepetidos (descifradosLista lista 0)
 eliminarRepetidos:: (Eq t) => [t] -> [t] 
 eliminarRepetidos [] = []
 eliminarRepetidos (x:xs)
-    |elem x xs = eliminarRepetidos xs
-    |otherwise = x : eliminarRepetidos xs
+    | elem x xs = eliminarRepetidos xs
+    | otherwise = x : eliminarRepetidos xs
 
 -- Recorre la lista y devuelve todos los descifrados (Puede haber repetidos) 
 descifradosLista :: [String] -> Int -> [(String, String)]
-descifradosLista lista n 
-    |n == (length lista) = []
-    |cifradoEnLista (head lista) (tail lista) = (tuplaCifrado : tuplaCifradoInv : descifradosLista rotarLista (n+1))
-    |otherwise = descifradosLista rotarLista (n+1)
+descifradosLista lista num 
+    | num == (length lista) = []
+    | cifradoEnLista (head lista) (tail lista) = (tuplaCifrado : tuplaCifradoInv : descifradosLista rotarLista (num + 1))
+    | otherwise = descifradosLista rotarLista (num + 1)
         where tuplaCifrado = (head lista, cifrado (head lista) (tail lista))
               tuplaCifradoInv = (cifrado (head lista) (tail lista), head lista)
               rotarLista = (tail lista) ++ [(head lista)]
@@ -128,29 +128,29 @@ descifradosLista lista n
 cifrado :: String -> [String] -> String 
 cifrado frase [] = ""
 cifrado frase lista
-    |esDescifrado frase (head lista) = head lista
-    |otherwise = cifrado frase (tail lista)
+    | esDescifrado frase (head lista) = head lista
+    | otherwise = cifrado frase (tail lista)
 
 -- Verifica que el cifrado o descifrado de una palabra esté dentro de la lista 
 cifradoEnLista :: String -> [String] -> Bool 
 cifradoEnLista _ [] = False
 cifradoEnLista frase lista
-    |esDescifrado frase (head lista) = True
-    |otherwise = cifradoEnLista frase (tail lista)
+    | esDescifrado frase (head lista) = True
+    | otherwise = cifradoEnLista frase (tail lista)
 
 -- EJ 11
 expandirClave :: String -> Int -> String
 expandirClave "" _ = ""
-expandirClave frase n
-    |length frase > n = eliminarExceso frase n
-    |otherwise = expandirClave (frase ++ frase) n
+expandirClave frase num
+    | length frase > num = eliminarExceso frase num
+    | otherwise = expandirClave (frase ++ frase) num
 
 -- Toma una palabra y recortar los últimos n caracteres
 eliminarExceso :: String -> Int -> String 
 eliminarExceso "" _ = ""
-eliminarExceso frase n
-    |n == 0 = []
-    |otherwise = head frase : eliminarExceso (tail frase) (n-1) 
+eliminarExceso frase num
+    | num == 0 = []
+    | otherwise = head frase : eliminarExceso (tail frase) (num - 1) 
 
 -- EJ 12
 cifrarVigenere :: String -> String -> String
@@ -158,7 +158,7 @@ cifrarVigenere ""  ""   = []
 cifrarVigenere ""  _    = ""
 cifrarVigenere frase "" = frase
 cifrarVigenere frase1 frase2 = primeraLetra : cifrarSiguienteLetra
-    where primeraLetra = desplazar (head frase1) (letraANatural(head frase2))
+    where primeraLetra = desplazar (head frase1) (letraANatural (head frase2))
           cifrarSiguienteLetra = cifrarVigenere (tail frase1) (tail (expandirClave frase2 (length frase1)))
 
 -- EJ 13
@@ -167,7 +167,7 @@ descifrarVigenere "" ""    = []
 descifrarVigenere "" _     = ""
 descifrarVigenere frase "" = frase
 descifrarVigenere frase1 frase2 = primeraLetra : descifrarSiguienteLetra
-    where primeraLetra = desplazar (head frase1) ((letraANatural(head frase2))*(-1))
+    where primeraLetra = desplazar (head frase1) ((letraANatural (head frase2)) * (-1))
           descifrarSiguienteLetra = descifrarVigenere (tail frase1) (tail (expandirClave frase2 (length frase1)))
 
 -- EJ 14
@@ -175,9 +175,9 @@ peorCifrado :: String -> [String] -> String
 peorCifrado "" _ = ""
 peorCifrado frase [x] = x
 peorCifrado frase (x:y:claves) -- Compara la distancia de secuencia de la primera clave con la segunda
-    |x == "a" || y == "a" = "a"
-    |primeraClave <= segundaClave = peorCifrado frase (y:claves)
-    |otherwise = peorCifrado frase (x:claves)
+    | x == "a" || y == "a" = "a"
+    | primeraClave <= segundaClave = peorCifrado frase (y : claves)
+    | otherwise = peorCifrado frase (x : claves)
         where primeraClave = absoluto (distanciaSecuencias frase (cifrarVigenere frase x)) 
               segundaClave = absoluto (distanciaSecuencias frase (cifrarVigenere frase y))
 
@@ -190,8 +190,8 @@ distanciaSecuencias frase1 frase2 = diferenciaHeads + distanciaSecuencias (tail 
 -- Funcion para dar el valor absoluto de la distancia
 absoluto :: Int -> Int
 absoluto n
-    |n >= 0 = n
-    |otherwise = -n
+    | n >= 0 = n
+    | otherwise = -n
 
 -- EJ 15
 combinacionesVigenere :: [String] -> [String] -> String -> [(String, String)]
@@ -206,5 +206,5 @@ combinacionesVigenere frases claves cifrado = combinacionesVigPalabra frase clav
 combinacionesVigPalabra :: String -> [String] -> String -> [(String, String)] 
 combinacionesVigPalabra _ [] _ = []
 combinacionesVigPalabra frase claves cifrado
-    |cifrarVigenere frase (head claves) == cifrado = (frase, head claves) : combinacionesVigPalabra frase (tail claves) cifrado
-    |otherwise = combinacionesVigPalabra frase (tail claves) cifrado
+    | cifrarVigenere frase (head claves) == cifrado = (frase, head claves) : combinacionesVigPalabra frase (tail claves) cifrado
+    | otherwise = combinacionesVigPalabra frase (tail claves) cifrado
