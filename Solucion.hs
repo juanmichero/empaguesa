@@ -202,7 +202,6 @@ siguienteLetraDistinta (x:y:xs)
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
---esDescifrado "" "" = True
 esDescifrado frase1 frase2 = ciclo frase1 frase2 0
 
 ciclo :: String -> String -> Int -> Bool
@@ -281,6 +280,7 @@ descifrarVigenere frase1 frase2 = primeraLetra : descifrarSiguienteLetra
     
 
 -- EJ 14
+--
 peorCifrado :: String -> [String] -> String
 peorCifrado "" _ = ""
 peorCifrado frase [x] = x
@@ -299,7 +299,7 @@ distanciaSecuencias frase1 frase2 = diferenciaHeads + distanciaSecuencias (tail 
 absoluto :: Int -> Int -- funcion para dar el valor absoluto de la distancia
 absoluto n
     |n >= 0 = n
-    |otherwise = -n
+    |otherwise = -n--}
 
 -- EJ 15
 combinacionesVigenere :: [String] -> [String] -> String -> [(String, String)]
