@@ -23,7 +23,6 @@ allTests = test [
     "combinacionesVigenere" ~: testsEjcombinacionesVigenere
     ]
 
-
 testsEjesMinuscula = test [
     esMinuscula 'd' ~?= True,
     esMinuscula 'D' ~?= False,
@@ -46,28 +45,28 @@ testsEjdesplazar = test [
     desplazar 'z' 5 ~?= 'e',
     desplazar 'a' 27 ~?= 'b',
     desplazar 'f' 26 ~?= 'f',
-    desplazar 'g' 0 ~?= 'g'
+    desplazar 'g' 0 ~?= 'g',
     desplazar 'g' (-28) ~?= 'e'
     ]
 
 testsEjcifrar = test [
-    cifrar "computacion" 3 ~?= "frpsxwdflrq"
+    cifrar "computacion" 3 ~?= "frpsxwdflrq",
     cifrar "Abcz" 2 ~?= "Adeb",
     cifrar "HOLA" 4 ~?= "HOLA",
-    cifrar " " 69 ~?= " "
+    cifrar " " 69 ~?= " ",
     cifrar "xyz" 0 ~?= "xyz"
     ]
 
 testsEjdescifrar = test [
-    descifrar "frpsxwdflrq" 3 ~?= "computacion"
+    descifrar "frpsxwdflrq" 3 ~?= "computacion",
     descifrar "Adeb" 2 ~?= "Abcz",
     descifrar "HOLA" 4 ~?= "HOLA",
-    descifrar " " 69 ~?= " "
+    descifrar " " 69 ~?= " ",
     descifrar "xyz" 0 ~?= "xyz"
     ]
 
 testsEjcifrarLista = test [
-    cifrarLista ["compu", "labo", "intro"] ~?= ["compu", "mbcp", "kpvtq"]
+    cifrarLista ["compu", "labo", "intro"] ~?= ["compu", "mbcp", "kpvtq"],
     cifrarLista ["hola"] ~?= ["hola"],
     cifrarLista [] ~?= [],
     cifrarLista ["hOla", "abz", "bBb"] ~?= ["hOla", "bca", "dBd"] 
@@ -75,16 +74,13 @@ testsEjcifrarLista = test [
 
 testsEjfrecuencia = test [
     expectlistProximity (frecuencia "taller") [16.666668,0.0,0.0,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0,33.333336,0.0,0.0,0.0,0.0,0.0,16.666668,0.0,16.666668,0.0,0.0,0.0,0.0,0.0,0.0],
-    expectlistProximity (frecuencia "FEFaEF") [100.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
-    expectlistProximity (frecuencia "TALLER") [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0], 
-    expectlistProximity (frecuencia "") [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
-    expectlistProximity (frecuencia "az") [50.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0],
-    expectlistProximity (frecuencia "abc") [33.33336,33.33336,33.33336,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]   
+    expectlistProximity (frecuencia "TALLER") [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+    expectlistProximity (frecuencia "az") [50.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0]
     ]
 
 testsEjcifradoMasFrecuente = test [
     cifradoMasFrecuente "taller" 3 ~?= ('o', 33.333336),
-     "caso una sola letra" ~: cifradoMasFrecuente "a" 1 ~?= ('b', 100.0),
+    "caso una sola letra" ~: cifradoMasFrecuente "a" 1 ~?= ('b', 100.0),
     "caso empate" ~: expectAny (cifradoMasFrecuente "aabb" 2) [('c', 50.0),('d', 50.0)],
     "caso empate con caracteres especiales" ~: expectAny (cifradoMasFrecuente "aaDbb" 1) [('b', 50.0),('c', 50.0)]
     ]
@@ -101,32 +97,52 @@ testsEjesDescifrado = test [
     ]
 
 testsEjtodosLosDescifrados = test [
-    todosLosDescifrados ["compu", "frpsx", "mywza"] ~?= [("compu", "frpsx"), ("frpsx", "compu")],
-    todosLosDescifrados ["Hola", "Hpmb", "hola"] ~?= [("Hola","Hpmb"),("Hpmb","Hola")],
+    expectPermutacion (todosLosDescifrados ["compu", "frpsx", "mywza"]) [("compu", "frpsx"), ("frpsx", "compu")],
+    expectPermutacion (todosLosDescifrados ["Hola", "Hpmb", "hola"]) [("Hola","Hpmb"),("Hpmb","Hola")],
     todosLosDescifrados [("Hola")] ~?= [],
     todosLosDescifrados [("qwer"),("hola")] ~?= [],
-    --arreglar la funcion para este caso
     expectPermutacion (todosLosDescifrados ["abc", "bcd","cde"]) [("abc", "bcd"), ("abc","cde"),("bcd","abc"),("cde","abc"),("bcd","cde"),("cde","bcd")]
     ]
 
 testsEjexpandirClave = test [
-    expandirClave "compu" 8 ~?= "compucom"
+    expandirClave "compu" 8 ~?= "compucom",
+    expandirClave "hola" 3 ~?= "hol",
+    expandirClave "sistemas" 17 ~?= "sistemassistemass",
+    expandirClave "gris" 1 ~?= "g"
     ]
 
 testsEjcifrarVigenere = test [
-    cifrarVigenere "computacion" "ip" ~?= "kdueciirqdv"
+    cifrarVigenere "computacion" "ip" ~?= "kdueciirqdv",
+    cifrarVigenere "computacion" "a" ~?= "computacion",
+    cifrarVigenere "computacion" "aaaaaaaa" ~?= "computacion",
+    cifrarVigenere "computacion" "ab" ~?= "cpmquuadipn",
+    cifrarVigenere "computacion" "abababababa" ~?= "cpmquuadipn",
+    cifrarVigenere "" "abababababa" ~?= "",
+    cifrarVigenere "COMPUTaCION"  "b" ~?= "COMPUTbCION"
     ]
 
 testsEjdescifrarVigenere = test [
-    descifrarVigenere "kdueciirqdv" "ip" ~?= "computacion"
+    descifrarVigenere "kdueciirqdv" "ip" ~?= "computacion",
+    descifrarVigenere "computacion" "a" ~?= "computacion",
+    descifrarVigenere "computacion" "aaaaaaaa" ~?= "computacion",
+    descifrarVigenere "cpmquuadipn" "ab" ~?= "computacion",
+    descifrarVigenere "cpmquuadipn" "abababababa" ~?= "computacion",
+    descifrarVigenere "" "abababababa" ~?= "",
+    descifrarVigenere "COMPUTbCION" "b" ~?= "COMPUTaCION"
     ]
 
 testsEjpeorCifrado = test [
-    peorCifrado "computacion" ["ip", "asdef", "ksy"] ~?= "asdef"
+    peorCifrado "computacion" ["ip", "asdef", "ksy"] ~?= "asdef",
+    "|claves| == 1 con clave generica" ~: peorCifrado "casa" ["afk"] ~?= "afk",
+    "'a' esta en claves (no desplaza)" ~: peorCifrado "computacion" ["ip", "asdef", "a", "ksy"] ~?= "a",
+    "Hay empate en distancias" ~: expectAny (peorCifrado "frase" ["jklmn", "lkmnj", "nmlkj"]) ["jklmn", "lkmnj", "nmlkj"],
+    "frase vacia (no hay peorCifrado)" ~: peorCifrado "" ["ip", "qwerty", "slm"] ~?= ""
     ]
 
 testsEjcombinacionesVigenere = test [
-    combinacionesVigenere ["hola", "mundo"] ["a", "b"] "ipmb" ~?= [("hola", "b")]
+    combinacionesVigenere ["hola", "mundo"] ["a", "b"] "ipmb" ~?= [("hola", "b")],
+    expectPermutacion(combinacionesVigenere ["abc","cde"] ["d", "b"] "def") [("abc","d"),("cde","b")],
+    combinacionesVigenere ["abc", "cde"] ["ab","bc"]  "acc" ~?= [("abc","ab")]
     ]
 
 -- Funciones útiles
