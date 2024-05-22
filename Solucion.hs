@@ -98,29 +98,19 @@ ciclo frase1 frase2 n
     |otherwise = False
 
 -- EJ 10 
+todosLosDescifradosAux :: [String]-> [String] ->[String] -> [(String,String)]
+todosLosDescifradosAux (l1:l1s) (l2:l2s) listaAux
+    |l1s==[] && l2s==[] = []
+    |l1 == l2 = todosLosDescifradosAux (l1:l1s) l2s listaAux
+    |not(esDescifrado l1 l2) && l2s == [] = todosLosDescifradosAux l1s listaAux listaAux
+    |not(esDescifrado l1 l2) = todosLosDescifradosAux (l1:l1s) l2s listaAux
+    |esDescifrado l1 l2 && l2s == [] = (l1,l2):todosLosDescifradosAux l1s listaAux listaAux
+    |esDescifrado l1 l2 = (l1,l2):todosLosDescifradosAux (l1:l1s) l2s listaAux
+    |l2s == []  = todosLosDescifradosAux l1s listaAux listaAux
+ 
+    
 todosLosDescifrados :: [String] -> [(String, String)]
-todosLosDescifrados [] = []
-todosLosDescifrados lista = descifradosLista lista 0
-
-descifradosLista :: [String] -> Int -> [(String, String)]
-descifradosLista lista n
-    |n == length lista = []
-    |cifradoEnLista (head lista) (tail lista) = tuplaCifrado : descifradosLista rotarLista (n+1)
-    |otherwise = descifradosLista rotarLista (n+1)
-        where tuplaCifrado = (head lista, cifrado (head lista) (tail lista))
-              rotarLista = (tail lista) ++ [(head lista)]
-
-cifrado :: String -> [String] -> String -- Dado un String y una lista, da el cifrado o descifrado de cualquiera de sus pasos, de no haberlo, da un espacio en blanco
-cifrado frase [] = ""
-cifrado frase lista
-    |esDescifrado frase (head lista) = head lista
-    |otherwise = cifrado frase (tail lista)
-
-cifradoEnLista :: String -> [String] -> Bool -- Verifica que el cifrado o descifrado de una palabra esté dentro de la lista 
-cifradoEnLista _ [] = False
-cifradoEnLista frase lista
-    |esDescifrado frase (head lista) = True
-    |otherwise = cifradoEnLista frase (tail lista)
+todosLosDescifrados lista = todosLosDescifradosAux lista lista lista
 
 -- EJ 11
 expandirClave :: String -> Int -> String
