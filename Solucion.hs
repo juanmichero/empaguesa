@@ -105,38 +105,36 @@ ciclo frase1 frase2 num
 -- EJ 10 
 todosLosDescifrados :: [String] -> [(String, String)]
 todosLosDescifrados [] = []
-todosLosDescifrados lista = eliminarRepetidos (descifradosLista lista 0)
+todosLosDescifrados lista = todosLosDescifradosRecursion lista 0
 
--- Elimina los posibles repetidos de a funcion auxiliar de abajo
-eliminarRepetidos:: (Eq t) => [t] -> [t] 
-eliminarRepetidos [] = []
-eliminarRepetidos (x:xs)
-    | elem x xs = eliminarRepetidos xs
-    | otherwise = x : eliminarRepetidos xs
+--Funcion auxiliar que ayuda a hacer el paso recursivo
+todosLosDescifradosRecursion :: [String] -> Int -> [(String, String)]
+todosLosDescifradosRecursion lista contador
+    |contador == length lista = []
+    |otherwise = descifradosATupla (head lista) listaDescifrados ++ todosLosDescifradosRecursion rotarLista (contador+1)
+        where listaDescifrados = descifradosLista (head lista) lista
+              rotarLista = tail lista ++ [head lista]
 
--- Recorre la lista y devuelve todos los descifrados (Puede haber repetidos) 
-descifradosLista :: [String] -> Int -> [(String, String)]
-descifradosLista lista num 
-    | num == (length lista) = []
-    | cifradoEnLista (head lista) (tail lista) = (tuplaCifrado : tuplaCifradoInv : descifradosLista rotarLista (num + 1))
-    | otherwise = descifradosLista rotarLista (num + 1)
-        where tuplaCifrado = (head lista, cifrado (head lista) (tail lista))
-              tuplaCifradoInv = (cifrado (head lista) (tail lista), head lista)
-              rotarLista = (tail lista) ++ [(head lista)]
+--Cuenta el número de pasos que tuvo que hacer cifrar en frase para llegar al descifrado
+numeroDePasos :: String -> String -> Int
+numeroDePasos frase cifrado
+    |frase == cifrado = 0
+    |otherwise = 1 + numeroDePasos frase (descifrar cifrado 1)
 
--- Dado un String y una lista, da el cifrado o descifrado de cualquiera de sus pasos, de no haberlo, da un espacio en blanco
-cifrado :: String -> [String] -> String 
-cifrado frase [] = ""
-cifrado frase lista
-    | esDescifrado frase (head lista) = head lista
-    | otherwise = cifrado frase (tail lista)
+--Da todos los descifrados de una palabra, si el elemento en lista es igual a frase, lo salta (excepto si frase no es minuscula en ninguna letra)
+descifradosLista :: String -> [String] -> [String]
+descifradosLista _ [] = []
+descifradosLista frase lista 
+    |cualquierCifradoEsFrase = head lista : descifradosLista frase (tail lista)
+    |esDescifrado frase (head lista) && mod pasos 26 /= 0 = head lista : descifradosLista frase (tail lista)
+    |otherwise = descifradosLista frase (tail lista)
+        where pasos = numeroDePasos frase (head lista)
+              cualquierCifradoEsFrase = frase == cifrar (head lista) 1 && frase == cifrar (head lista) 2 --Si ambos son iguales, entonces todas lo son
 
--- Verifica que el cifrado o descifrado de una palabra esté dentro de la lista 
-cifradoEnLista :: String -> [String] -> Bool 
-cifradoEnLista _ [] = False
-cifradoEnLista frase lista
-    | esDescifrado frase (head lista) = True
-    | otherwise = cifradoEnLista frase (tail lista)
+--Toma la lista de descifrados de la frase y los junta con la frase en una tupla
+descifradosATupla :: String -> [String] -> [(String, String)] 
+descifradosATupla _ [] = []
+descifradosATupla frase lista = (frase, head lista) : descifradosATupla frase (tail lista)
 
 -- EJ 11
 expandirClave :: String -> Int -> String
