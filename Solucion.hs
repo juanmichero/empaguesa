@@ -202,12 +202,13 @@ siguienteLetraDistinta (x:y:xs)
 
 -- EJ 9
 esDescifrado :: String -> String -> Bool
-esDescifrado frase1 frase2 = ciclo frase1 frase2 0
+--esDescifrado "" "" = True
+esDescifrado frase1 frase2 = ciclo frase1 frase2 1
 
 ciclo :: String -> String -> Int -> Bool
 ciclo frase1 frase2 n 
     |frase1 == frase2 = True
-    |n < 27 = ciclo frase1 (cifrar frase2 1) (n+1)
+    |n < 26 && n >= 1 = ciclo frase1 (cifrar frase2 1) (n+1)
     |otherwise = False
 
 -- EJ 10 
@@ -244,6 +245,7 @@ descifradosATupla :: String -> [String] -> [(String, String)]
 descifradosATupla _ [] = []
 descifradosATupla frase lista = (frase, head lista) : descifradosATupla frase (tail lista)
 
+
 -- EJ 11
 expandirClave :: String -> Int -> String
 expandirClave "" _ = ""
@@ -257,10 +259,6 @@ eliminarExceso "" _ = ""
 eliminarExceso frase n
     |n == 0 = []
     |otherwise = head frase : eliminarExceso (tail frase) (n-1) 
-
-{--rotarFrase :: String -> Int -> String
-rotarFrase frase 0 = frase 
-rotarFrase frase n = rotarFrase (tail frase ++ [(head frase)]) (n-1)--}
 
 -- EJ 12
 cifrarVigenere :: String -> String -> String
@@ -282,12 +280,11 @@ descifrarVigenere frase1 frase2 = primeraLetra : descifrarSiguienteLetra
     
 
 -- EJ 14
---
 peorCifrado :: String -> [String] -> String
 peorCifrado "" _ = ""
 peorCifrado frase [x] = x
-peorCifrado frase (x:y:claves) -- Compara la distancia de secuencia de la primera clave con la segunda
-    |x == "a" || y == "a" = "a"
+peorCifrado frase (x:y:claves) -- Compara la distancia de secuencia de frase con la primera clave y con la segunda
+    |x == "a" || y == "a" = "a" -- Si 'a' está en claves, da como resultado este, ya que no desplaza a frase
     |primeraClave <= segundaClave = peorCifrado frase (y:claves)
     |otherwise = peorCifrado frase (x:claves)
         where primeraClave = absoluto (distanciaSecuencias frase (cifrarVigenere frase x)) 
@@ -301,7 +298,7 @@ distanciaSecuencias frase1 frase2 = diferenciaHeads + distanciaSecuencias (tail 
 absoluto :: Int -> Int -- funcion para dar el valor absoluto de la distancia
 absoluto n
     |n >= 0 = n
-    |otherwise = -n--}
+    |otherwise = -n
 
 -- EJ 15
 combinacionesVigenere :: [String] -> [String] -> String -> [(String, String)]
